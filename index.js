@@ -1,63 +1,33 @@
-// import env
+const axios = require('axios');
+const express = require('express');
 require('dotenv').config();
 
-// import axios
-const axios = require('axios');
-const { json } = require('body-parser');
-
-// express app
-const express = require('express');
+// express config
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// how to use the following in axios curl -X POST \
-//   --header '17token:YourKey' \
-//   --header 'Content-Type:application/json' \
-//   --data '[
-//             {
-//               "number": "RR123456789CN"
-//             }
-//           ]' \
-//   https://api.17track.net/track/v2/register
+function request(number) {
+    axios.post('https://api.17track.net/track/v2/register',
+        data={"number": number},
+        config={headers: {
+            '17token': process.env.API_KEY,
+            'Content-Type': 'application/json'
+        }}
+    ).then((res) => {
+        let data = res.data
+        console.log(JSON.stringify(data, null, 4));
+    }).catch((error) => {
+        console.error(error);
+    });
+}
 
-// axios config
-
-const config = {
-    headers: {
-        '17token': process.env.API_KEY,
-        'Content-Type': 'application/json'
-    }
-};
-
-// axios data
-
-const data = [
-    {
-        "number": "LV668867798CN"
-        
-    }
-];
-
-// axios post
-
-
-axios.post('https://api.17track.net/track/v2/register', data, config).then((res) => {
-    let data = res.data
-    console.log(`statusCode: ${res.statusCode}`);
-    console.log(JSON.stringify(data, null, 4));
-}).catch((error) => {
-    console.error(error);
-});
-
-
-
+// request("ZN304903503HK")
 
 // serve static files
-
 app.use(express.static('public'));
 
+// serve index.html
 app.get('/', (req, res) => {
-    // serve index.html
     res.sendFile(__dirname + '/index.html');
 });
 
