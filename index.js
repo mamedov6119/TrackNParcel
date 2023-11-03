@@ -19,15 +19,14 @@ function request(number, res_main) {
             'Content-Type': 'application/json'
         }}
     ).then((res) => {
-        console.log(JSON.stringify(res.data, null, 4));
         if (data.accepted && data.rejected && data.accepted.length > 0 && data.rejected.length > 0) {
             return res_main.render('success', {
-                accepted: res.data.accepted,
-                rejected: res.data.rejected
+                accepted: res.data.data.accepted,
+                rejected: res.data.data.rejected
             });
         }
         return res_main.render('failure', {
-            errors: data.errors || []
+            errors: res.data.data.errors || []
         });
     }).catch((error) => {
         return res_main.render('failure', {
