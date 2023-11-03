@@ -1,0 +1,28 @@
+:root {
+    --text: #0a0a1f;
+    --background: #fbfbfe;
+    --primary: #4141c3;
+    --secondary: #c4c4ed;
+    --accent: #525289;
+}
+
+body {
+    background-color: var(--background);
+    font-family: 'Roboto', sans-serif;
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Make sure the body takes up the full viewport height */
+    display: flex;
+    flex-direction: column;    
+
+}
+
+footer {
+    background-color: var(--primary);
+    color: var(--background);
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto; /* Push the footer to the bottom of the page */
+
+}
