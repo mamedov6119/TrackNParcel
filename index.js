@@ -11,18 +11,21 @@ app.use(express.urlencoded());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-function request(number, res_main) {
-    axios.post('https://api.17track.net/track/v2/register',
-        data={"number": number},
-        config={headers: {
-            '17token': process.env.API_KEY,
-            'Content-Type': 'application/json'
-        }}
+function request(package_id, res_main) {
+    axios.post('https://api.17track.net/track/v2/gettrackinfo',
+        data = { "guid": "", "data": [{ "number": package_id, "carrier": null }] },
+        config = {
+            headers: {
+                '17token': process.env.API_KEY,
+                'Content-Type': 'application/json'
+            }
+        }
     ).then((res) => {
+        console.log(JSON.stringify(res.data, null, 4));
         if (data.accepted && data.rejected && data.accepted.length > 0 && data.rejected.length > 0) {
             return res_main.render('success', {
-                accepted: res.data.data.accepted,
-                rejected: res.data.data.rejected
+                accepted: res.data.accepted,
+                rejected: res.data.rejected
             });
         }
         return res_main.render('failure', {
