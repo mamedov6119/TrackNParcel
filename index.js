@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
 function request(number, res_main) {
     axios.post('https://api.17track.net/track/v2/register',
@@ -18,9 +19,20 @@ function request(number, res_main) {
             'Content-Type': 'application/json'
         }}
     ).then((res) => {
-        res_main.send(JSON.stringify(res.data, null, 4));
+        console.log(JSON.stringify(res.data, null, 4));
+        if (data.accepted && data.rejected && data.accepted.length > 0 && data.rejected.length > 0) {
+            return res_main.render('success', {
+                accepted: res.data.accepted,
+                rejected: res.data.rejected
+            });
+        }
+        return res_main.render('failure', {
+            errors: data.errors || []
+        });
     }).catch((error) => {
-        res_main.send(JSON.stringify(error, null, 4));
+        return res_main.render('failure', {
+            errors: error.response.data.errors || []
+        });
     });
 }
 
@@ -32,8 +44,8 @@ app.get('/', (req, res) => {
 // post request
 app.post('/track', (req, res) => {
     let package_id = req.body.package_id;
-    request(package_id, res);
+    return request(package_id, res);
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`port :${port}!`));
 
