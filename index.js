@@ -6,7 +6,11 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-function request(number) {
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.static('public'));
+
+function request(number, res_main) {
     axios.post('https://api.17track.net/track/v2/register',
         data={"number": number},
         config={headers: {
@@ -14,21 +18,21 @@ function request(number) {
             'Content-Type': 'application/json'
         }}
     ).then((res) => {
-        let data = res.data
-        console.log(JSON.stringify(data, null, 4));
+        res_main.send(JSON.stringify(res.data, null, 4));
     }).catch((error) => {
-        console.error(error);
+        res_main.send(JSON.stringify(error, null, 4));
     });
 }
-
-// request("ZN304903503HK")
-
-// serve static files
-app.use(express.static('public'));
 
 // serve index.html
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
+});
+
+// post request
+app.post('/track', (req, res) => {
+    let package_id = req.body.package_id;
+    request(package_id, res);
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
