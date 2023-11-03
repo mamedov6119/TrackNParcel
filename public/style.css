@@ -1,13 +1,13 @@
 :root {
     --text: #0a0a1f;
-    --background: #fbfbfe;
+    --background: #c8c8f6;
     --primary: #4141c3;
     --secondary: #c4c4ed;
     --accent: #525289;
 }
 
 body {
-    background-color: var(--background);
+    background-color: var(--background) !important;
     font-family: 'Roboto', sans-serif;
     color: var(--text);
     margin: 0;
@@ -26,3 +26,57 @@ footer {
     margin-top: auto; /* Push the footer to the bottom of the page */
 
 }
+
+input[type=text] {
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid var(--primary);
+    border-radius: 4px;
+    background-color: transparent;
+    color: white;
+    border-bottom: 1px solid white;
+    
+}
+input[type=text]::placeholder {
+    color: white;
+}
+
+.navbar{
+    background-color: var(--primary);
+}
+
+.search_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    background-color: var(--primary);
+    border-radius: 4rem;
+    width: 30%;
+    height: 20%;
+    margin-top: 20%;
+    margin-left: 35%;
+    margin-right: 35%;
+    padding:3%;
+
+}
+.search_field{
+    background-color: var(--secondary);
+    color: var(--text);
+    width: 100%; 
+}
+
+
+
+
+/* for screens larger than 768px */
+@media screen and (max-width: 720px) {
+    .search_box {
+        width:60%; 
+        height: 20%;
+        padding: 2rem;
+        margin-left: 23%;
+
+    }
+}
+
